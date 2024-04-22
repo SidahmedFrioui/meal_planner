@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:meal_planner/pages/sign_up.dart';
+import 'package:meal_planner/validators/validators.dart';
 import 'package:meal_planner/widgets/my_button.dart';
 import 'package:meal_planner/widgets/my_text_button.dart';
 import 'package:meal_planner/widgets/text_field.dart';
@@ -14,6 +14,11 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  GlobalKey<FormState> myFormState = GlobalKey<FormState>();
+
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,70 +29,81 @@ class _LoginState extends State<Login> {
             vertical: 50,
           ),
           alignment: Alignment.center,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(
-                'Welcome to my App',
-                style: TextStyle(
-                  color: Colors.blue[900],
-                  fontSize: 30,
+          child: Form(
+            key: myFormState,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  'Welcome to my App',
+                  style: TextStyle(
+                    color: Colors.blue[900],
+                    fontSize: 30,
+                  ),
                 ),
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              Icon(
-                Icons.person,
-                size: 100,
-                color: Colors.blue[700],
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              const MyTextField(
-                myIcon: Icon(Icons.person),
-                myHintText: "Username",
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              const MyTextField(
-                myIcon: Icon(Icons.lock),
-                myHintText: "Password",
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              MyButton(
-                buttonLabel: "Login",
-                onPress: () => {},
-              ),
-              const SizedBox(
-                height: 80,
-              ),
-              MyTextButton(
-                label: "Forgot Password?",
-                onPress: () => {},
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Dont have an account?"),
-                  MyTextButton(
-                    label: "Sign up",
-                    onPress: () => {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SignUp(),
-                        ),
-                      ),
-                    },
-                  )
-                ],
-              )
-            ],
+                const SizedBox(
+                  height: 40,
+                ),
+                Icon(
+                  Icons.person,
+                  size: 100,
+                  color: Colors.blue[700],
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                MyTextField(
+                  myIcon: const Icon(Icons.person),
+                  myHintText: "Username",
+                  myValidator: emptyCheck,
+                  myController: usernameController,
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                MyTextField(
+                  myIcon: const Icon(Icons.lock),
+                  myHintText: "Password",
+                  myValidator: myValidatePwdFct,
+                  myController: passwordController,
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                MyButton(
+                  buttonLabel: "Login",
+                  onPress: () => {
+                    if (myFormState.currentState!.validate())
+                      {
+                        Navigator.pushReplacementNamed(context, '/home'),
+                      }
+                    else
+                      {
+                        print("Not Valide"),
+                      }
+                  },
+                ),
+                const SizedBox(
+                  height: 80,
+                ),
+                MyTextButton(
+                  label: "Forgot Password?",
+                  onPress: () => {},
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Dont have an account?"),
+                    MyTextButton(
+                      label: "Sign up",
+                      onPress: () => {
+                        Navigator.pushReplacementNamed(context, '/signup'),
+                      },
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

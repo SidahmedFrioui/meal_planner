@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meal_planner/constants/day_list.dart';
+import 'package:meal_planner/models/day_meals.dart';
 import 'package:meal_planner/widgets/days_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,7 +24,11 @@ class _HomePageState extends State<HomePage> {
       body: ListView.builder(
         itemCount: dayList.length,
         itemBuilder: (BuildContext context, int index) {
-          return DaysCard(day: dayList[index]);
+          DayMeals day = DayMeals(
+            day: dayList[index],
+            listOfMeals: [],
+          );
+          return DaysCard(dayAndItsMealsList: day);
         },
       ),
     );

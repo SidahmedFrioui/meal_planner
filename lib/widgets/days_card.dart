@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:meal_planner/models/day_meals.dart';
+import 'package:meal_planner/pages/new_meal_page.dart';
 
 class DaysCard extends StatelessWidget {
-  final String day;
+  final DayMeals dayAndItsMealsList;
 
   const DaysCard({
     super.key,
-    required this.day,
+    required this.dayAndItsMealsList,
   });
 
   @override
@@ -13,7 +15,7 @@ class DaysCard extends StatelessWidget {
     return Container(
       height: 70,
       margin: const EdgeInsets.all(10.0),
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(
         color: Colors.orange,
         borderRadius: BorderRadius.circular(15.0),
@@ -27,25 +29,40 @@ class DaysCard extends StatelessWidget {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  day,
+                  dayAndItsMealsList.day,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,
                   ),
                 ),
               ),
-              const Row(
+              Row(
                 children: [
-                  Icon(
-                    Icons.visibility,
+                  IconButton(
+                    icon: const Icon(Icons.visibility),
                     color: Colors.black87,
+                    onPressed: () => {
+                      Navigator.pushReplacementNamed(
+                        context,
+                        '/detail',
+                        arguments: dayAndItsMealsList,
+                      ),
+                    },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
-                  Icon(
-                    Icons.add,
+                  IconButton(
+                    icon: const Icon(Icons.add),
                     color: Colors.black87,
+                    onPressed: () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const NewMeal(),
+                        ),
+                      ),
+                    },
                   )
                 ],
               )

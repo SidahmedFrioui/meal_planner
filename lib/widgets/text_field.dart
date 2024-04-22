@@ -4,11 +4,13 @@ class MyTextField extends StatelessWidget {
   final Icon myIcon;
   final String myHintText;
   final String? Function(String?)? myValidator;
+  final TextEditingController? myController;
 
   const MyTextField({
     super.key,
     required this.myIcon,
     required this.myHintText,
+    this.myController,
     this.myValidator,
   });
 
@@ -16,6 +18,7 @@ class MyTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       validator: myValidator,
+      controller: myController,
       decoration: InputDecoration(
         hintText: myHintText,
         prefixIcon: myIcon,
