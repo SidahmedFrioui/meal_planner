@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 
 class DaysCard extends StatelessWidget {
-  const DaysCard({super.key, required this.day});
-
   final String day;
+
+  const DaysCard({
+    super.key,
+    required this.day,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 70,
-      margin: EdgeInsets.all(10.0),
-      padding: EdgeInsets.all(20.0),
+      margin: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(20.0),
       decoration: BoxDecoration(
-          color: Colors.orange, borderRadius: BorderRadius.circular(15.0)),
+        color: Colors.orange,
+        borderRadius: BorderRadius.circular(15.0),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -22,22 +27,25 @@ class DaysCard extends StatelessWidget {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  this.day,
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+                  day,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
                 ),
               ),
-              Row(
+              const Row(
                 children: [
                   Icon(
                     Icons.visibility,
-                    color: Colors.redAccent,
+                    color: Colors.black87,
                   ),
                   SizedBox(
                     width: 10,
                   ),
                   Icon(
                     Icons.add,
-                    color: Colors.redAccent,
+                    color: Colors.black87,
                   )
                 ],
               )

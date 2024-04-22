@@ -1,23 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:meal_planner/components/days_card.dart';
+import 'package:meal_planner/constants/day_list.dart';
+import 'package:meal_planner/widgets/days_card.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({
+    super.key,
+  });
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> dayList = [
-    'Saturday',
-    'Sunday',
-    'Monday',
-    'Thuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday'
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,10 +21,11 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: ListView.builder(
-          itemCount: dayList.length,
-          itemBuilder: (BuildContext context, int index) {
-            return DaysCard(day: dayList[index]);
-          }),
+        itemCount: dayList.length,
+        itemBuilder: (BuildContext context, int index) {
+          return DaysCard(day: dayList[index]);
+        },
+      ),
     );
   }
 }

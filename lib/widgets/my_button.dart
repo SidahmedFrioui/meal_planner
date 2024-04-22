@@ -18,15 +18,27 @@ class MyButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPress,
         style: ButtonStyle(
-            side: MaterialStateProperty.all(
-                const BorderSide(color: Colors.black)),
-            backgroundColor: MaterialStateProperty.all(Colors.orange),
-            shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10)))),
+          side: MaterialStateProperty.all(
+            const BorderSide(
+              color: Colors.black,
+            ),
+          ),
+          backgroundColor: MaterialStateProperty.all(
+            Colors.orange,
+          ),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        ),
         child: Text(
           buttonLabel,
           style: const TextStyle(
-              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
         ),
       ),
     );
