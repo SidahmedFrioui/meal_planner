@@ -1,4 +1,6 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:meal_planner/firebase_options.dart';
 import 'package:meal_planner/pages/details_page.dart';
 import 'package:meal_planner/pages/home_page.dart';
 import 'package:meal_planner/pages/new_meal_page.dart';
@@ -6,7 +8,11 @@ import 'package:meal_planner/routes/routes.dart';
 import 'package:meal_planner/pages/login.dart';
 import 'package:meal_planner/pages/sign_up.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 

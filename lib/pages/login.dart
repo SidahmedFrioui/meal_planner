@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:meal_planner/validators/validators.dart';
 import 'package:meal_planner/widgets/my_button.dart';
@@ -16,8 +17,36 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   GlobalKey<FormState> myFormState = GlobalKey<FormState>();
 
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<void> _signInWithEmailAndPassword() async {
+    try {
+      final String email = _usernameController.text.trim();
+      final String password = _passwordController.text.trim();
+
+      final UserCredential userCredential =
+          await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      final User? user = userCredential.user;
+      print("user $user");
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.redAccent,
+          content: Text(
+            "Email ou mot de passe est incorrect",
+          ),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +85,7 @@ class _LoginState extends State<Login> {
                   myIcon: const Icon(Icons.person),
                   myHintText: "Username",
                   myValidator: emptyCheck,
-                  myController: usernameController,
+                  myController: _usernameController,
                 ),
                 const SizedBox(
                   height: 15,
@@ -64,23 +93,18 @@ class _LoginState extends State<Login> {
                 MyTextField(
                   myIcon: const Icon(Icons.lock),
                   myHintText: "Password",
-                  myValidator: myValidatePwdFct,
-                  myController: passwordController,
+                  myValidator: emptyCheck,
+                  myController: _passwordController,
                 ),
                 const SizedBox(
                   height: 15,
                 ),
                 MyButton(
                   buttonLabel: "Login",
-                  onPress: () => {
-                    if (myFormState.currentState!.validate())
-                      {
-                        Navigator.pushReplacementNamed(context, '/home'),
-                      }
-                    else
-                      {
-                        print("Not Valide"),
-                      }
+                  onPress: () async {
+                    if (myFormState.currentState!.validate()) {
+                      await _signInWithEmailAndPassword();
+                    }
                   },
                 ),
                 const SizedBox(
