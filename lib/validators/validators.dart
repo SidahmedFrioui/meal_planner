@@ -23,7 +23,7 @@ String? myValidatePwdFct(String? value) {
 
 String? emptyCheck(String? value) {
   if (value!.isEmpty) {
-    return 'Veuillez remplir ce champ';
+    return 'This field cannot be empty';
   }
   return null;
 }

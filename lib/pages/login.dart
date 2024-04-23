@@ -27,14 +27,10 @@ class _LoginState extends State<Login> {
       final String email = _usernameController.text.trim();
       final String password = _passwordController.text.trim();
 
-      final UserCredential userCredential =
-          await _auth.signInWithEmailAndPassword(
+      await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-
-      final User? user = userCredential.user;
-      print("user $user");
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -83,7 +79,7 @@ class _LoginState extends State<Login> {
                 ),
                 MyTextField(
                   myIcon: const Icon(Icons.person),
-                  myHintText: "Username",
+                  myHintText: "Email",
                   myValidator: emptyCheck,
                   myController: _usernameController,
                 ),
@@ -112,7 +108,22 @@ class _LoginState extends State<Login> {
                 ),
                 MyTextButton(
                   label: "Forgot Password?",
-                  onPress: () => {},
+                  onPress: () async {
+                    await FirebaseAuth.instance.sendPasswordResetEmail(
+                      email: _usernameController.text,
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: Colors.greenAccent,
+                        content: Text(
+                          "A password reset link has been sent to your email",
+                        ),
+                        duration: Duration(
+                          seconds: 2,
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:meal_planner/models/day_meals.dart';
 import 'package:meal_planner/validators/validators.dart';
 import 'package:meal_planner/widgets/my_button.dart';
 import 'package:meal_planner/widgets/text_field.dart';
@@ -23,6 +26,19 @@ class _NewMealState extends State<NewMeal> {
             "New meal",
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              try {
+                await FirebaseAuth.instance.signOut();
+                Navigator.pushReplacementNamed(context, '/login');
+              } catch (e) {
+                rethrow;
+              }
+            },
+            icon: const Icon(Icons.logout),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -116,15 +132,8 @@ class _NewMealState extends State<NewMeal> {
                 ),
                 MyButton(
                   buttonLabel: "Add the meal",
-                  onPress: () => {
-                    if (myFormState.currentState!.validate())
-                      {
-                        print("Valide"),
-                      }
-                    else
-                      {
-                        print("Not Valide"),
-                      }
+                  onPress: () {
+                    if (myFormState.currentState!.validate()) {}
                   },
                 ),
               ],

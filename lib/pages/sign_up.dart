@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meal_planner/validators/validators.dart';
 import 'package:meal_planner/widgets/my_button.dart';
 import 'package:meal_planner/widgets/my_text_button.dart';
@@ -62,6 +64,7 @@ class _SignUpState extends State<SignUp> {
                   myHintText: "Password",
                   myValidator: myValidatePwdFct,
                   myController: passwordController,
+                  obscure: true,
                 ),
                 const SizedBox(
                   height: 10,
@@ -70,21 +73,38 @@ class _SignUpState extends State<SignUp> {
                   myIcon: const Icon(Icons.lock),
                   myHintText: "Confirm Password",
                   myController: confirmPasswordController,
+                  obscure: true,
                 ),
                 const SizedBox(
                   height: 10,
                 ),
                 MyButton(
                   buttonLabel: "Sign Up",
-                  onPress: () => {
-                    if (myFormState.currentState!.validate())
-                      {
-                        Navigator.pushReplacementNamed(context, '/home'),
+                  onPress: () async {
+                    if (myFormState.currentState!.validate()) {
+                      try {
+                        final credential = await FirebaseAuth.instance
+                            .createUserWithEmailAndPassword(
+                          email: emailController.text,
+                          password: passwordController.text,
+                        );
+                        await credential.user?.sendEmailVerification();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            backgroundColor: Colors.greenAccent,
+                            content: Text(
+                              "Verify your email to access your account",
+                            ),
+                            duration: Duration(
+                              seconds: 2,
+                            ),
+                          ),
+                        );
+                        Navigator.pushReplacementNamed(context, '/login');
+                      } catch (e) {
+                        print(e);
                       }
-                    else
-                      {
-                        print("Not Valide"),
-                      }
+                    }
                   },
                 ),
                 const SizedBox(
@@ -96,7 +116,25 @@ class _SignUpState extends State<SignUp> {
                 ),
                 MyButton(
                   buttonLabel: "Sign in with Google",
-                  onPress: () => {},
+                  onPress: () async {
+                    // Trigger the authentication flow
+                    final GoogleSignInAccount? googleUser =
+                        await GoogleSignIn().signIn();
+
+                    // Obtain the auth details from the request
+                    final GoogleSignInAuthentication? googleAuth =
+                        await googleUser?.authentication;
+
+                    // Create a new credential
+                    final credential = GoogleAuthProvider.credential(
+                      accessToken: googleAuth?.accessToken,
+                      idToken: googleAuth?.idToken,
+                    );
+
+                    await FirebaseAuth.instance
+                        .signInWithCredential(credential);
+                    Navigator.pushReplacementNamed(context, '/home');
+                  },
                 ),
                 const SizedBox(
                   height: 10,

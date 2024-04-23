@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:meal_planner/models/day_meals.dart';
 import 'package:meal_planner/models/meal.dart';
@@ -22,6 +23,19 @@ class DetailsPage extends StatelessWidget {
         title: const Center(
           child: Text("Details"),
         ),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              try {
+                await FirebaseAuth.instance.signOut();
+                Navigator.pushReplacementNamed(context, '/login');
+              } catch (e) {
+                rethrow;
+              }
+            },
+            icon: const Icon(Icons.logout),
+          ),
+        ],
       ),
       body: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

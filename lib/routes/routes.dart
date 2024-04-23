@@ -4,6 +4,7 @@ import 'package:meal_planner/pages/home_page.dart';
 import 'package:meal_planner/pages/login.dart';
 import 'package:meal_planner/pages/new_meal_page.dart';
 import 'package:meal_planner/pages/sign_up.dart';
+import 'package:meal_planner/pages/user.dart';
 
 class Routes {
   static const String home = '/home';
@@ -11,6 +12,7 @@ class Routes {
   static const String signup = '/signup';
   static const String detail = '/detail';
   static const String addMeal = '/add';
+  static const String user = '/user';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -24,6 +26,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const DetailsPage());
       case addMeal:
         return MaterialPageRoute(builder: (_) => const NewMeal());
+      case user:
+        return MaterialPageRoute(builder: (_) => UserPage());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
