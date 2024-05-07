@@ -1,13 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:meal_planner/models/day_meals.dart';
+import 'package:meal_planner/cloud_firestore/firestore_services.dart';
+import 'package:meal_planner/models/meal/meal.dart';
+//import 'package:hive/hive.dart';
+//import 'package:meal_planner/models/day_meals.dart';
+//import 'package:meal_planner/models/meal.dart';
 import 'package:meal_planner/validators/validators.dart';
 import 'package:meal_planner/widgets/my_button.dart';
 import 'package:meal_planner/widgets/text_field.dart';
 
 class NewMeal extends StatefulWidget {
-  const NewMeal({super.key});
+  final String day;
+  const NewMeal({
+    super.key,
+    required this.day,
+  });
 
   @override
   State<NewMeal> createState() => _NewMealState();
@@ -15,7 +22,13 @@ class NewMeal extends StatefulWidget {
 
 class _NewMealState extends State<NewMeal> {
   List<MyTextField> listOfMyTextField = [];
+  List<String> listOfIngredient = [];
   GlobalKey<FormState> myFormState = GlobalKey<FormState>();
+
+  FireStoreServices fs = FireStoreServices();
+
+  final TextEditingController _mealNameController = TextEditingController();
+  final TextEditingController _imagePathController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -47,18 +60,20 @@ class _NewMealState extends State<NewMeal> {
             key: myFormState,
             child: Column(
               children: [
-                const MyTextField(
+                MyTextField(
                   myIcon: Icon(Icons.restaurant_menu),
                   myHintText: "Enter meal name",
                   myValidator: emptyCheck,
+                  myController: _mealNameController,
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                const MyTextField(
+                MyTextField(
                   myIcon: Icon(Icons.image),
                   myHintText: "Enter image path",
                   myValidator: emptyCheck,
+                  myController: _imagePathController,
                 ),
                 const SizedBox(
                   height: 10,
@@ -99,10 +114,11 @@ class _NewMealState extends State<NewMeal> {
                               onPressed: () => {
                                 setState(() {
                                   listOfMyTextField.add(
-                                    const MyTextField(
+                                    MyTextField(
                                       myIcon: Icon(Icons.abc),
                                       myHintText: "Ingredient name",
                                       myValidator: emptyCheck,
+                                      myController: TextEditingController(),
                                     ),
                                   );
                                 }),
@@ -132,8 +148,39 @@ class _NewMealState extends State<NewMeal> {
                 ),
                 MyButton(
                   buttonLabel: "Add the meal",
-                  onPress: () {
-                    if (myFormState.currentState!.validate()) {}
+                  onPress: () async {
+                    if (myFormState.currentState!.validate()) {
+                      Map<String, dynamic> currentDay = {
+                        'id': FirebaseAuth.instance.currentUser!.uid,
+                        'day': widget.day,
+                      };
+                      if (listOfMyTextField.isNotEmpty) {
+                        Meal meal = new Meal(
+                          name: _mealNameController.text,
+                          imgPath: _imagePathController.text,
+                          listOfIngredient: listOfIngredient,
+                        );
+                        listOfMyTextField.forEach((field) {
+                          listOfIngredient.add(field.myController!.text);
+                        });
+                        await fs.addDayDoc(
+                          currentDay,
+                          meal,
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            backgroundColor: Colors.greenAccent,
+                            content: Text(
+                              "Meal added",
+                            ),
+                            duration: Duration(
+                              seconds: 2,
+                            ),
+                          ),
+                        );
+                        Navigator.pushReplacementNamed(context, '/home');
+                      }
+                    }
                   },
                 ),
               ],

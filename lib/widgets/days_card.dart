@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:meal_planner/models/day_meals.dart';
+import 'package:meal_planner/models/day_meals/day_meals.dart';
 import 'package:meal_planner/pages/new_meal_page.dart';
 
 class DaysCard extends StatelessWidget {
@@ -59,7 +59,9 @@ class DaysCard extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const NewMeal(),
+                          builder: (context) => NewMeal(
+                            day: dayAndItsMealsList.day,
+                          ),
                         ),
                       ),
                     },

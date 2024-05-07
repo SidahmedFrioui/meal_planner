@@ -100,6 +100,7 @@ class _LoginState extends State<Login> {
                   onPress: () async {
                     if (myFormState.currentState!.validate()) {
                       await _signInWithEmailAndPassword();
+                      Navigator.pushReplacementNamed(context, '/home');
                     }
                   },
                 ),

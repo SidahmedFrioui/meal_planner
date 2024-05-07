@@ -2,11 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:meal_planner/firebase_options.dart';
-import 'package:meal_planner/models/day_meals.dart';
-import 'package:meal_planner/models/meal.dart';
+import 'package:meal_planner/models/day_meals/day_meals.dart';
+import 'package:meal_planner/models/meal/meal.dart';
 import 'package:meal_planner/pages/details_page.dart';
 import 'package:meal_planner/pages/home_page.dart';
-import 'package:meal_planner/pages/new_meal_page.dart';
 import 'package:meal_planner/pages/user.dart';
 import 'package:meal_planner/routes/routes.dart';
 import 'package:meal_planner/pages/login.dart';
@@ -58,7 +57,6 @@ class _MyAppState extends State<MyApp> {
         Routes.login: (context) => const Login(),
         Routes.signup: (context) => const SignUp(),
         Routes.detail: (context) => const DetailsPage(),
-        Routes.addMeal: (context) => const NewMeal(),
         Routes.user: (context) => const UserPage(),
       },
       home: (_user != null) ? const HomePage() : const Login(),

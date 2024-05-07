@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:meal_planner/models/meal.dart';
+import 'package:meal_planner/models/meal/meal.dart';
 
 part 'day_meals.g.dart';
 
